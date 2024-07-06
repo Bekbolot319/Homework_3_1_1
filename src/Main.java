@@ -1,15 +1,23 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        BankAccount account = new BankAccount();
+        account.deposit(15000);
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+        while (true) {
+            try {
+                account.withdraw(6000);
+                System.out.println("Успешно снято 6000 сом. Остаток: " + account.getAmount());
+            } catch (LimitException e) {
+                System.out.println("Недостаточно средств на счете. Остаток: " + e.getRemainingAmount());
+                try {
+                    account.withdraw((int) e.getRemainingAmount());
+                    System.out.println("Снята оставшаяся сумма: " + e.getRemainingAmount());
+                } catch (LimitException _) {
+
+                }
+                break;
+            }
         }
     }
 }
